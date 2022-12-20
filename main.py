@@ -5,7 +5,6 @@ import SimpleITK as sitk
 from plots import Plots
 import sys
 import numpy as np
-import os
 
 class Main(QMainWindow):
     def __init__(self):
@@ -43,7 +42,6 @@ class Main(QMainWindow):
 
         self.ob_hline.sigPositionChanged.connect(lambda: self.update_image(self.volume_array,"o"))
         self.spinBox.valueChanged.connect(lambda: self.update_image(self.volume_array,"a", self.spinBox.value()))
-        
 
     def importer(self, path):
         reader = sitk.ImageSeriesReader()
@@ -80,7 +78,8 @@ class Main(QMainWindow):
             self.ax_oline.setAngle(angle)
             view = np.flipud(arr)
             view = np.rot90(view, 3)
-            self.ob_image.setImage(self.get_ob_slice(view, angle, self.ax_oline.value()))
+            if angle != 0 and angle != 180:
+                self.ob_image.setImage(self.get_ob_slice(view, angle, self.ax_oline.value()))
         
         elif axes == 'c':
             self.ax_vline.setValue(self.cor_vline.value())
